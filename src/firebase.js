@@ -1,13 +1,13 @@
 import * as firebase from 'firebase';
 const firebaseConfig = {
-    apiKey: "AIzaSyBQpRsuFtYzxo3T304nnxtOWkJirZ6NsH0",
-    authDomain: "our-fl-platform.firebaseapp.com",
-    databaseURL: "https://our-fl-platform.firebaseio.com",
-    projectId: "our-fl-platform",
-    storageBucket: "our-fl-platform.appspot.com",
-    messagingSenderId: "698414177342",
-    appId: "1:698414177342:web:4c61f1ec632d01ea06456f",
-    measurementId: "G-9YSMQ9E0KZ"
+    apiKey: "AIzaSyAW6DQg8aOVNjtqkoW1Z2btWf7nRppncxs",
+    authDomain: "silo-ml.firebaseapp.com",
+    databaseURL: "https://silo-ml.firebaseio.com",
+    projectId: "silo-ml",
+    storageBucket: "silo-ml.appspot.com",
+    messagingSenderId: "64634408148",
+    appId: "1:64634408148:web:31dcd430ca169fcbbd3f41",
+    measurementId: "G-20Z0QKWCTP"
   };
 firebase.initializeApp(firebaseConfig);
 const databaseRef = firebase.database().ref();
