@@ -8,9 +8,6 @@ import firebaseConfig from './firebaseConfig';
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-db.settings({
-  timestampsInSnapshots: true
-});
 const firebaseAppAuth = firebaseApp.auth();
 const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
@@ -19,6 +16,35 @@ const providers = {
 
 class App extends React.Component {
 
+  constructor() {
+    super()
+    this.registerDataset = this.registerDataset.bind(this);
+  }
+
+  registerDataset = () => {
+    /* Add dataset to datasets */
+    let user_uuid = this.props.user.uid;
+    db.collection('datasets').add(
+      {
+        name: "Hardcoded name for now",
+        description: "Hardcoded description",
+        owner_id: user_uuid,
+        connected_status: false,
+        list_of_requests: [] 
+
+      }
+    ).then(function(datasetRef) {
+      /* Add dataset reference to user */
+      const userRef = db.collection('users').doc(user_uuid)
+      userRef.update({
+        list_of_datasets: firebase.firestore.FieldValue.arrayUnion(datasetRef)
+      })
+    
+    }).catch(function(error) {
+      console.error("Error adding new dataset: ", error);
+    });
+  };
+
   render(){
     const {
       user,
@@ -26,7 +52,7 @@ class App extends React.Component {
       signInWithGoogle,
     } = this.props;
 
-    /* Register user if not already registered*/
+    /* Register user if not already registered */
     if (user) {
       db.collection('users').doc(user.uid).set(
         {
@@ -50,6 +76,13 @@ class App extends React.Component {
             user
               ? <button onClick={signOut}>Sign out</button>
               : <button onClick={signInWithGoogle}>Sign in with Google</button>
+          }
+
+          {/* Owner: Register dataset */}
+          {
+            user
+              ? <button onClick={this.registerDataset}>Register data</button>
+              : ""
           }
         </header>
       </div>
