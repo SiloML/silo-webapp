@@ -20,6 +20,7 @@ class App extends React.Component {
     super()
     this.registerDataset = this.registerDataset.bind(this);
     this.createProject = this.createProject.bind(this);
+    this.requestForData = this.requestForData.bind(this);
   }
 
   registerDataset = () => {
@@ -31,7 +32,6 @@ class App extends React.Component {
         description: "Hardcoded description",
         owner_id: user_uuid,
         connected_status: false,
-        list_of_requests: [] 
 
       }
     ).then(function(datasetRef) {
@@ -54,7 +54,6 @@ class App extends React.Component {
         name: "Hardcoded name for now",
         description: "Hardcoded description",
         researcher_id: user_uuid,
-        list_of_requests: []
       }
     ).then(function(projectRef) {
       /* Add dataset reference to user */
@@ -65,6 +64,37 @@ class App extends React.Component {
     
     }).catch(function(error) {
       console.error("Error creating new project: ", error);
+    });
+  };
+
+  requestForData = () => {
+    /* Hardcoded researcher, owner, project_id, dataset_id*/
+    let owner_uuid = "Uqv5oJkh8eWsQPf9CLohIn2wMTf1";
+    let dataset_id = "HBAF8YMZQIkDM9CvDUmg";
+    let researcher_uuid = "Oy3UauTsREglXN6LTqLBI08cdYN2";
+    let project_id = "tyWTzzwTdoLYI1RahBtK";
+
+    db.collection('requests').add(
+      {
+        owner_id: owner_uuid,
+        researcher_id: researcher_uuid,
+        project_id: project_id,
+        dataset_id: dataset_id,
+        status: "Pending"
+      }
+    ).then(function(requestRef) {
+      /* Add request reference to project id */
+      const projectRef = db.collection('projects').doc(project_id)
+      projectRef.update({
+        list_of_requests: firebase.firestore.FieldValue.arrayUnion(requestRef)
+      })
+      /* Add request reference to dataset id */
+      const datasetRef = db.collection('datasets').doc(dataset_id)
+      datasetRef.update({
+        list_of_requests: firebase.firestore.FieldValue.arrayUnion(requestRef)
+      })
+    }).catch(function(error) {
+      console.error("Error adding a new request", error);
     });
   };
 
@@ -111,6 +141,12 @@ class App extends React.Component {
             user
               ? <button onClick={this.createProject}>Create project</button>
               : ""
+          }
+          {/* Researcher: Send a request to one of the data owners */}
+          {
+            user
+            ? <button onClick={this.requestForData}>Request for Data</button>
+            : ""
           }
         </header>
       </div>
