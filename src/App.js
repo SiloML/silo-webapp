@@ -21,6 +21,7 @@ class App extends React.Component {
     this.registerDataset = this.registerDataset.bind(this);
     this.createProject = this.createProject.bind(this);
     this.requestForData = this.requestForData.bind(this);
+    this.approveRequest = this.approveRequest.bind(this);
   }
 
   registerDataset = () => {
@@ -98,6 +99,19 @@ class App extends React.Component {
     });
   };
 
+  approveRequest = () => {
+    /* Hardcoded Request*/
+    let request_id = "rJe5KSwvfhNXtYBkwn9L";
+
+    db.collection('requests').doc(request_id).update(
+      {
+        status: "Approved"
+      }
+    ).catch(function(error) {
+      console.error("Error approving request", error);
+    });
+  };
+
   render(){
     const {
       user,
@@ -146,6 +160,12 @@ class App extends React.Component {
           {
             user
             ? <button onClick={this.requestForData}>Request for Data</button>
+            : ""
+          }
+          {/* Owner: Approve the request */}
+          {
+            user
+            ? <button onClick={this.approveRequest}>Approve said request</button>
             : ""
           }
         </header>
