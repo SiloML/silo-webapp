@@ -22,6 +22,7 @@ class App extends React.Component {
     this.createProject = this.createProject.bind(this);
     this.requestForData = this.requestForData.bind(this);
     this.approveRequest = this.approveRequest.bind(this);
+    this.rejectRequest = this.rejectRequest.bind(this);
   }
 
   registerDataset = () => {
@@ -112,6 +113,19 @@ class App extends React.Component {
     });
   };
 
+  rejectRequest = () => {
+    /* Hardcoded Request*/
+    let request_id = "Ellmv4rCwTYqAMqJzyex";
+
+    db.collection('requests').doc(request_id).update(
+      {
+        status: "Rejected"
+      }
+    ).catch(function(error) {
+      console.error("Error rejecting request", error);
+    });
+  };
+
   render(){
     const {
       user,
@@ -166,6 +180,12 @@ class App extends React.Component {
           {
             user
             ? <button onClick={this.approveRequest}>Approve said request</button>
+            : ""
+          }
+          {/* Owner: Reject the request */}
+          {
+            user
+            ? <button onClick={this.rejectRequest}>Reject said request</button>
             : ""
           }
         </header>
