@@ -56,8 +56,8 @@ class App extends Component {
         <div className="tabs">
         {error && <div>ERROR: {error}</div>}
           <Switch>
-            <Route path={`/`} exact component={Home} />
-            <ProtectedRoute path={`/profile`} user={user} component={Profile}/>
+            <Route path={`/`} user={user} db ={db} exact component={Home} />
+            <ProtectedRoute path={`/profile`} user={user} db ={db} component={Profile}/>
           </Switch>
         </div>
       </div>
