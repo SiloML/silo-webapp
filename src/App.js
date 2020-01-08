@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import "./App.css";
-import Profile from "./Profile.js";
+import Profile from "./profile/Profile.js";
 import Home from "./Home.js";
 import ProtectedRoute from "./ProtectedRoute.js";
 import withFirebaseAuth from "react-with-firebase-auth";

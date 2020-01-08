@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Switch, Route, Link, Redirect } from "react-router-dom";
-import "./App.css";
-import ProjectEntry from "./profile/ProjectEntry";
+import "../App.css";
+import ProjectList from "./ProjectList";
 
 const DataOwner = props => (
   <div>You're on the Profile-DataOwner Tab {props.db}</div>
@@ -28,7 +28,7 @@ class Profile extends Component {
               user={user}
               db={db}
               exact
-              render={props => <ProjectEntry db={db}></ProjectEntry>}
+              render={props => <ProjectList db={db} user={user}></ProjectList>}
             />
             <Route
               path={`${path}/dataowner`}
