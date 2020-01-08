@@ -13,19 +13,25 @@ const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
 
+const connection_statuses = {
+  planned: 'planned', // unconnected
+  available: 'available', // owner registered device w OTP, tornado knows connected
+  unavailable: 'unavailable', // connection is in use
+}
 
 class App extends React.Component {
 
   constructor() {
     super()
-    this.registerDataset = this.registerDataset.bind(this);
+    this.createDataset = this.createDataset.bind(this);
     this.createProject = this.createProject.bind(this);
     this.requestForData = this.requestForData.bind(this);
     this.approveRequest = this.approveRequest.bind(this);
     this.rejectRequest = this.rejectRequest.bind(this);
+    this.verifyDatasetId = this.verifyDatasetId.bind(this);
   }
-
-  registerDataset = () => {
+  
+  createDataset = () => {
     /* Add dataset to datasets */
     let user_uuid = this.props.user.uid;
     db.collection('datasets').add(
@@ -33,7 +39,8 @@ class App extends React.Component {
         name: "Hardcoded name for now",
         description: "Hardcoded description",
         owner_id: user_uuid,
-        connected_status: false,
+        connection_status: connection_statuses.planned,
+        OTP: ""
 
       }
     ).then(function(datasetRef) {
@@ -126,6 +133,25 @@ class App extends React.Component {
     });
   };
 
+  verifyDatasetId= () => {
+    /* Hardcoded Request*/
+    let dataset_id = "e2qBRk6SCspTn12XEZw3";
+    let OTP = "Nsb4io";
+
+    let datasetRef = db.collection('datasets').doc(dataset_id);
+    datasetRef.get().then(function(doc) {
+      if (doc.exists) {
+          console.log("Document data:", doc.data());
+      } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+      }
+      }).catch(function(error) {
+          console.log("Error getting document:", error);
+      });
+
+  };
+
   render(){
     const {
       user,
@@ -158,10 +184,16 @@ class App extends React.Component {
               ? <button onClick={signOut}>Sign out</button>
               : <button onClick={signInWithGoogle}>Sign in with Google</button>
           }
-          {/* Owner: Register dataset */}
+          {/* Owner: Create dataset */}
           {
             user
-              ? <button onClick={this.registerDataset}>Register data</button>
+              ? <button onClick={this.createDataset}>Create new data</button>
+              : ""
+          }
+          {/* Owner: Use OTP to verify the owner dataset id */}
+                    {
+            user
+              ? <button onClick={this.verifyDatasetId}>Verify dataset id</button>
               : ""
           }
           {/* Researcher: Start a new project */}
