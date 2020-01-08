@@ -1,10 +1,10 @@
 import React from "react";
-import * as firebase from "firebase";
 
 class ProjectEntry extends React.Component {
   constructor(props) {
     super(props);
     this.project_id = "tyWTzzwTdoLYI1RahBtK";
+    console.log(props);
     this.colRef = props.db.collection("requests");
     this.state = {
       datasets: []

@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import { Switch, Route, Link, Redirect } from "react-router-dom";
 import "./App.css";
+import ProjectEntry from "./profile/ProjectEntry";
 
-const Researcher = () => <div>You're on the Profile-Researcher Tab</div>;
-const DataOwner = () => <div>You're on the Profile-DataOwner Tab</div>;
+const DataOwner = props => (
+  <div>You're on the Profile-DataOwner Tab {props.db}</div>
+);
 
 class Profile extends Component {
   render() {
-    const { path } = this.props.match;
-    const { user, db} = this.props;
+    const { path, user, db } = this.props;
     return (
       <div>
         <h2>Your Profile</h2>
@@ -22,8 +23,19 @@ class Profile extends Component {
         </div>
         <div className="tabs">
           <Switch>
-            <Route path={`${path}/researcher`} user={user} db={db} exact component={Researcher} />
-            <Route path={`${path}/dataowner`} user={user} db={db} component={DataOwner} />
+            <Route
+              path={`${path}/researcher`}
+              user={user}
+              db={db}
+              exact
+              render={props => <ProjectEntry db={db}></ProjectEntry>}
+            />
+            <Route
+              path={`${path}/dataowner`}
+              user={user}
+              db={db}
+              component={DataOwner}
+            />
             <Redirect from={`${path}`} to={`${path}/researcher`} />
           </Switch>
         </div>

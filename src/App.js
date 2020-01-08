@@ -8,7 +8,6 @@ import withFirebaseAuth from "react-with-firebase-auth";
 import * as firebase from "firebase";
 import "firebase/auth";
 import firebaseConfig from "./firebaseConfig";
-import ProjectEntry from "./profile/ProjectEntry";
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -57,16 +56,23 @@ class App extends Component {
         <div className="tabs">
           {error && <div>ERROR: {error}</div>}
           <Switch>
-            <Route path={`/`} user={user} db={db} exact component={Home} />
+            <Route
+              path={`/`}
+              user={user}
+              db={db}
+              exact
+              render={() => <Home db={db} user={user}></Home>}
+            />
             <ProtectedRoute
               path={`/profile`}
               user={user}
               db={db}
-              component={Profile}
+              render={() => (
+                <Profile path={`/profile`} user={user} db={db}></Profile>
+              )}
             />
           </Switch>
         </div>
-        <ProjectEntry db={db}></ProjectEntry>
       </div>
     );
   }
