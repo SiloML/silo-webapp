@@ -13,7 +13,6 @@ class ProjectEntry extends React.Component {
   constructor(props) {
     super(props);
     this.project_id = props.id;
-    console.log(props);
     this.colRef = props.db.collection("requests");
     this.docRef = props.db.doc("/projects/" + this.project_id);
     this.state = {
@@ -86,7 +85,7 @@ class ProjectEntry extends React.Component {
     return (
       <div style={divStyle}>
         <div>
-          {this.state.desc} by {this.state.name}
+          {this.state.desc} by {this.state.name}. API KEY: {this.project_id}
         </div>
         {this.state.datasets.length > 0 ? (
           <TableContainer component={Paper}>

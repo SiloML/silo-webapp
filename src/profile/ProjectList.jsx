@@ -31,7 +31,6 @@ class ProjectList extends React.Component {
     this.setState({ loading: true });
     var projs = this.state.projects;
     this.unsubscribe = this.colRef.onSnapshot(snapshot => {
-      console.log("updating projs");
       snapshot.docChanges().forEach(change => {
         if (
           change.type === "added" &&
@@ -67,7 +66,6 @@ class ProjectList extends React.Component {
       projMap.push(
         <ProjectEntry db={this.props.db} user={this.props.user} id={proj} />
       );
-      console.log(proj);
     });
 
     return (
