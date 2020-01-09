@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import Profile from "./profile/Profile.js";
-import Home from "./Home.js";
+import Home from "./home/Home.js";
 import ProtectedRoute from "./ProtectedRoute.js";
 import withFirebaseAuth from "react-with-firebase-auth";
 import * as firebase from "firebase";
@@ -59,14 +59,14 @@ class App extends Component {
           )}
         </div>
         <div className="tabs">
-          {error && <div>ERROR: {error}</div>}
+          {error && <div>{error}</div>}
           <Switch>
             <Route
               path={`/`}
               user={user}
               db={db}
               exact
-              render={() => <Home db={db} user={user}></Home>}
+              render={() => <Home path={'/'} db={db} user={user}></Home>}
             />
             <ProtectedRoute
               path={`/profile`}
