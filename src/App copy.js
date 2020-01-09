@@ -33,12 +33,13 @@ class App extends React.Component {
   
   createDataset = () => {
     /* Add dataset to datasets */
-    let user_uuid = this.props.user.uid;
+    let { uid, displayName } = this.props.user;
     db.collection('datasets').add(
       {
         name: "Hardcoded name for now",
         description: "Hardcoded description",
-        owner_id: user_uuid,
+        owner_id: uid,
+        owner_name: displayName,
         connection_status: connection_statuses.planned,
         OTP: ""
 
@@ -57,12 +58,13 @@ class App extends React.Component {
 
   createProject = () => {
     /* Add dataset to datasets */
-    let user_uuid = this.props.user.uid;
+    let { uid, displayName } = this.props.user;
     db.collection('projects').add(
       {
         name: "Hardcoded name for now",
         description: "Hardcoded description",
-        researcher_id: user_uuid,
+        researcher_id: uid,
+        researcher_name: displayName 
       }
     ).then(function(projectRef) {
       /* Add dataset reference to user */

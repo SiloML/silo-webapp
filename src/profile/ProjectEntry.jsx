@@ -33,7 +33,6 @@ class ProjectEntry extends React.Component {
             .doc("/datasets/" + docSnapshot.data().dataset_id)
             .get()
             .then(doc => {
-              console.log("got dataset");
               if (doc && doc.exists) {
                 datasetInfo = doc.data();
                 var ownerName;
@@ -41,9 +40,7 @@ class ProjectEntry extends React.Component {
                   .doc("/users/" + datasetInfo.owner_id)
                   .get()
                   .then(doc => {
-                    console.log(datasetInfo);
                     if (doc && doc.exists) {
-                      console.log("got owner");
                       ownerName = doc.data().name;
                       reqs.push([
                         datasetInfo.name,
