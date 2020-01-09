@@ -37,6 +37,11 @@ class App extends Component {
     }
     return (
       <div>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        />
+
         <h1>Silo ML</h1>
         <div className="links">
           <Link to={`/`} className="link">

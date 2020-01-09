@@ -13,14 +13,14 @@ class ProjectList extends React.Component {
   componentDidMount() {
     var projs = [];
     this.unsubscribe = this.colRef.onSnapshot(snapshot => {
-      snapshot.forEach(docSnapshot => {
-        if (docSnapshot.data().researcher_id === this.props.user) {
+      snapshot.docs.forEach(docSnapshot => {
+        if (docSnapshot.data().researcher_id === this.props.user.uid) {
           projs.push(docSnapshot.id);
         }
       });
-    });
-    this.setState({
-      projects: projs
+      this.setState({
+        projects: projs
+      });
     });
   }
 
