@@ -29,12 +29,14 @@ class ProjectList extends React.Component {
   }
 
   render() {
-    return (
+    return this.state.projects.length > 0 ? (
       <>
         {this.state.projects.map(proj => (
           <ProjectEntry db={this.props.db} user={this.props.user} id={proj} />
         ))}
       </>
+    ) : (
+      <div>You don't have any research projects! Create one today!</div>
     );
   }
 }
