@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import List from "@material-ui/core/List";
 import HomeDatasetRow from './HomeDatasetRow';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import * as firebase from "firebase";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 class Home extends Component {
   constructor(props) {
@@ -9,7 +16,8 @@ class Home extends Component {
     this.userRef = props.db.collection("users");
     this.state = {
       datasets: [],
-      projects: []
+      projects: [],
+      snackbarOpen: false,
     };
   }
 
@@ -61,23 +69,69 @@ class Home extends Component {
     });
   }
 
+  setSnackbarOpen = (severity, message) => {
+    this.setState({
+      open: true,
+      severity: severity,
+      message: message
+    });
+  }
+
+  handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({
+      open: false,
+    });
+  };
+
+
+  makeDataRequest = (project_id, dataset) => {
+    const { db } = this.props;
+    const { setSnackbarOpen } = this;
+    db.collection('requests').add(
+      {
+        owner_id: dataset.owner_id,
+        researcher_id: this.props.user.uid,
+        project_id: project_id,
+        dataset_id: dataset.id,
+        status: "Pending"
+      }
+    ).then(function(requestRef) {
+      /* Add request reference to project id */
+      const projectRef = db.collection('projects').doc(project_id)
+      projectRef.update({
+        list_of_requests: firebase.firestore.FieldValue.arrayUnion(requestRef)
+      })
+      /* Add request reference to dataset id */
+      const datasetRef = db.collection('datasets').doc(dataset.id)
+      datasetRef.update({
+        list_of_requests: firebase.firestore.FieldValue.arrayUnion(requestRef)
+      })
+      setSnackbarOpen("success", "Data request successfully sent!");
+    }).catch(function(error) {
+      setSnackbarOpen("error", error);
+    });
+  }
+
   componentDidUpdate(prevProps) {
-    console.log("component updated", prevProps.user && prevProps.user.uid, this.props.user && this.props.user.uid, this.state.projects)
     if (!prevProps.user || prevProps.user.id !== this.props.user.id) {
       if (this.unsubscribeProjects) {
         this.unsubscribeProjects();
       }
       this.registerProjects(this.props.user);
-
     }
-
   } 
 
   render() {
-    return this.state.datasets.length > 0 ? (
+    return (
+      <div>
+      {this.state.datasets.length > 0 ? (
       <List dense>
         {this.state.datasets.map(dataset => 
         <HomeDatasetRow
+          makeDataRequest={this.makeDataRequest}
           dataset={dataset}
           user={this.props.user}
           db={this.props.db}
@@ -87,7 +141,14 @@ class Home extends Component {
       </List>
     ) : (
       <div>No datasets currently available</div>
-    );
+    )
+    }
+    <Snackbar open={this.state.open} autoHideDuration={6000} onClose={this.handleClose}>
+        <Alert onClose={this.handleClose} severity={this.state.severity}>
+          {this.state.message}
+        </Alert>
+    </Snackbar>
+    </div>)
   }
 }
 
