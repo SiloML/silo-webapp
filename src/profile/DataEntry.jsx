@@ -8,6 +8,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import CheckIcon from "@material-ui/icons/CheckOutlined";
 
 class DataEntry extends React.Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class DataEntry extends React.Component {
       projects: [],
       desc: "",
       name: "",
+      otp: "",
       loading: true
     };
   }
@@ -27,7 +29,10 @@ class DataEntry extends React.Component {
     this.unsubscribe1 = this.colRef.onSnapshot(snapshot => {
       var reqs = [];
       snapshot.docs.forEach(docSnapshot => {
-        if (docSnapshot.data().dataset_id === this.dataset_id) {
+        if (
+          docSnapshot.data().dataset_id === this.dataset_id &&
+          docSnapshot.data().status !== "Rejected"
+        ) {
           var projectInfo;
           this.props.db
             .doc("/projects/" + docSnapshot.data().project_id)
@@ -64,7 +69,8 @@ class DataEntry extends React.Component {
       if (docSnapshot && docSnapshot.data()) {
         this.setState({
           desc: docSnapshot.data().description,
-          name: docSnapshot.data().name
+          name: docSnapshot.data().name,
+          otp: docSnapshot.data().OTP
         });
       }
     });
@@ -89,7 +95,14 @@ class DataEntry extends React.Component {
     return (
       <div style={divStyle}>
         <div>
-          {this.state.desc} by {this.state.name}. API KEY: {this.dataset_id}
+          <h2>
+            {this.state.desc} by {this.state.name}. API KEY: {this.dataset_id}
+          </h2>
+          {this.state.otp && this.state.otp.length > 0 ? (
+            <h3>OTP: {this.state.otp}</h3>
+          ) : (
+            <></>
+          )}
         </div>
         {this.state.projects.length > 0 || this.state.loading ? (
           <TableContainer component={Paper} style={{ maxHeight: "300px" }}>
@@ -114,7 +127,9 @@ class DataEntry extends React.Component {
                     </TableCell>
                     <TableCell align="right">{row[1]}</TableCell>
                     <TableCell align="right">{row[2]}</TableCell>
-                    <TableCell align="right">{row[3]}</TableCell>
+                    <TableCell align="right">
+                      {row[3]} <CheckIcon />
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

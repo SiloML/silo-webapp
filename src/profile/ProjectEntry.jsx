@@ -82,6 +82,7 @@ class ProjectEntry extends React.Component {
       background: "#eee",
       margin: "5px"
     };
+
     return (
       <div style={divStyle}>
         <div>
