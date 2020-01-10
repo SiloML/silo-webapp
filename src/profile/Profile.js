@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import { Switch, Route, Link, Redirect } from "react-router-dom";
 import "../App.css";
 import ProjectList from "./ProjectList";
-
-const DataOwner = props => (
-  <div>You're on the Profile-DataOwner Tab {props.db}</div>
-);
+import DatasetList from "./DatasetList";
+import DataList from "./DataList";
 
 class Profile extends Component {
   render() {
@@ -34,7 +32,7 @@ class Profile extends Component {
               path={`${path}/dataowner`}
               user={user}
               db={db}
-              component={DataOwner}
+              render={props => <DataList db={db} user={user}></DataList>}
             />
             <Redirect from={`${path}`} to={`${path}/researcher`} />
           </Switch>

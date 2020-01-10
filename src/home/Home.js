@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import List from "@material-ui/core/List";
-import HomeDatasetRow from './HomeDatasetRow';
+import HomeDatasetRow from "./HomeDatasetRow";
 
 class Home extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class Home extends Component {
     this.unsubscribe = this.datasetRef.onSnapshot(snapshot => {
       var datasets = [];
       snapshot.docs.forEach(docSnapshot => {
-         datasets.push({id: docSnapshot.id, ...docSnapshot.data()});
+        datasets.push({ id: docSnapshot.id, ...docSnapshot.data() });
       });
       this.setState({
         datasets: datasets
@@ -26,7 +26,7 @@ class Home extends Component {
     this.registerProjects(this.props.user);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.unsubscribe();
     if (this.unsubscribeProjects) {
       this.unsubscribeProjects();
@@ -34,25 +34,23 @@ class Home extends Component {
   }
 
   // Grabs user's projects and updates the state
-  registerProjects(user){
+  registerProjects(user) {
     var user_id = user ? user.uid : "nouser";
-    this.unsubscribeProjects = this.userRef.doc(user_id).onSnapshot( doc => {
+    this.unsubscribeProjects = this.userRef.doc(user_id).onSnapshot(doc => {
       var projects = [];
       if (!doc.exists) {
-          console.log("No such document!");
-          return;
+        console.log("No such document!");
+        return;
       }
       var projRefs = doc.data().list_of_projects;
       if (projRefs) {
         projRefs.forEach(projRef => {
-          projRef.get().then(doc=>{
-            projects.push(
-              {
-                id: doc.id,
+          projRef.get().then(doc => {
+            projects.push({
+              id: doc.id,
               ...doc.data()
-              }
-            )
-          })
+            });
+          });
         });
         this.setState({
           projects: projects
@@ -62,28 +60,31 @@ class Home extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log("component updated", prevProps.user && prevProps.user.uid, this.props.user && this.props.user.uid, this.state.projects)
+    console.log(
+      "component updated",
+      prevProps.user && prevProps.user.uid,
+      this.props.user && this.props.user.uid,
+      this.state.projects
+    );
     if (!prevProps.user || prevProps.user.id !== this.props.user.id) {
       if (this.unsubscribeProjects) {
         this.unsubscribeProjects();
       }
       this.registerProjects(this.props.user);
-
     }
-
-  } 
+  }
 
   render() {
     return this.state.datasets.length > 0 ? (
       <List dense>
-        {this.state.datasets.map(dataset => 
-        <HomeDatasetRow
-          dataset={dataset}
-          user={this.props.user}
-          db={this.props.db}
-          projects={this.state.projects}
+        {this.state.datasets.map(dataset => (
+          <HomeDatasetRow
+            dataset={dataset}
+            user={this.props.user}
+            db={this.props.db}
+            projects={this.state.projects}
           />
-        )}
+        ))}
       </List>
     ) : (
       <div>No datasets currently available</div>
