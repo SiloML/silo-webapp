@@ -8,23 +8,6 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-const options = [
-  'None',
-  'Atria',
-  'Callisto',
-  'Dione',
-  'Ganymede',
-  'Hangouts Call',
-  'Luna',
-  'Oberon',
-  'Phobos',
-  'Pyxis',
-  'Sedna',
-  'Titania',
-  'Triton',
-  'Umbriel',
-];
-
 function HomeProjectSelection(props) {
   const { onClose, project_selected: valueProp, open, projects, ...other } = props;
   const [value, setValue] = React.useState(valueProp);
@@ -64,7 +47,7 @@ function HomeProjectSelection(props) {
       open={open}
       {...other}
     >
-      <DialogTitle id="confirmation-dialog-title">Phone Ringtone</DialogTitle>
+      <DialogTitle id="confirmation-dialog-title">Select project</DialogTitle>
       <DialogContent dividers>
         <RadioGroup
           ref={radioGroupRef}

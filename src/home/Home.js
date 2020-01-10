@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import HomeDatasetRow from './HomeDatasetRow';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import * as firebase from "firebase";
+import HomeProjectSelection from './HomeProjectSelection';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -15,11 +18,26 @@ class Home extends Component {
     this.datasetRef = props.db.collection("datasets");
     this.userRef = props.db.collection("users");
     this.state = {
+      openDialog: false,
+      project_selected: {id: "default", name: ""},
+      datasetsRequested: {"default": []},
       datasets: [],
       projects: [],
       snackbarOpen: false,
     };
   }
+
+  handleClickListItem = () => {
+    this.setState({openDialog: true});
+  };
+
+  handleClose = newValue => {
+    this.setState({openDialog: false});
+    if (newValue) {
+      const project_selected = this.state.projects.filter(proj => (proj.id === newValue));
+      this.setState({project_selected: project_selected[0]});
+    }
+  };
 
   componentDidMount() {
     this.unsubscribe = this.datasetRef.onSnapshot(snapshot => {
@@ -46,25 +64,47 @@ class Home extends Component {
     var user_id = user ? user.uid : "nouser";
     this.unsubscribeProjects = this.userRef.doc(user_id).onSnapshot(doc => {
       var projects = [];
+      var datasetsRequested = {};
       if (!doc.exists) {
         console.log("No such document!");
         return;
       }
-      var projRefs = doc.data().list_of_projects;
-      if (projRefs) {
-        projRefs.forEach(projRef => {
-          projRef.get().then(doc => {
-            projects.push({
-              id: doc.id,
-              ...doc.data()
+      if (
+        doc &&
+        doc.exists &&
+        doc.data().list_of_projects
+      ) {
+          var projRefs = doc.data().list_of_projects;
+          if (projRefs) {
+            projRefs.forEach(projRef => {
+              projRef.get().then(doc => {
+                projects.push({
+                  id: doc.id,
+                  ...doc.data()
+                })
+                datasetsRequested[doc.id] = []
+                if (
+                    doc &&
+                    doc.exists &&
+                    doc.data().list_of_requests
+                ) {
+                  const requests = doc.data().list_of_requests;
+                  requests.forEach(reqRef => {
+                    reqRef.onSnapshot(req => {
+                      datasetsRequested[doc.id].push(req.data());
+                    })
+                  })
+
+                }
+              });
+            })
+            this.setState({
+              projects: projects,
+              datasetsRequested: datasetsRequested
             });
-          });
-        });
-        this.setState({
-          projects: projects
-        });
-      }
-    });
+          }
+        }
+      });
   }
 
   setSnackbarOpen = (severity, message) => {
@@ -75,7 +115,7 @@ class Home extends Component {
     });
   }
 
-  handleClose = (event, reason) => {
+  handleSnackbarClose = (event, reason) =>{
     if (reason === 'clickaway') {
       return;
     }
@@ -85,9 +125,10 @@ class Home extends Component {
   };
 
 
-  makeDataRequest = (project_id, dataset) => {
+  makeDataRequest = (dataset) => {
     const { db } = this.props;
     const { setSnackbarOpen } = this;
+    const project_id = this.state.project_selected.id;
     db.collection('requests').add(
       {
         owner_id: dataset.owner_id,
@@ -112,19 +153,43 @@ class Home extends Component {
       setSnackbarOpen("error", error);
     });
   }
-
+  // Game plan: Retrieve all dataset requests from user's projects
+  // Check if each dataset_id is in those requests.dataset_id
   componentDidUpdate(prevProps) {
-    if (!prevProps.user || prevProps.user.id !== this.props.user.id) {
+    if (!prevProps.user || !this.props.user || prevProps.user.id !== this.props.user.id) {
       if (this.unsubscribeProjects) {
         this.unsubscribeProjects();
       }
       this.registerProjects(this.props.user);
     }
   } 
-
   render() {
     return (
       <div>
+      { this.props.user ? (<div>
+      <List component="div" role="list">
+        <ListItem
+          button
+          divider
+          aria-haspopup="true"
+          aria-controls="ringtone-menu"
+          aria-label="phone ringtone"
+          onClick={this.handleClickListItem}
+          role="listitem"
+        >
+          <ListItemText primary="Selecting data for" secondary={this.state.project_selected.name} />
+        </ListItem>
+        <HomeProjectSelection
+          id="ringtone-menu"
+          projects={this.state.projects}
+          keepMounted
+          open={this.state.openDialog}
+          onClose={this.handleClose}
+          value={this.state.project_selected}
+        />
+      </List>
+    </div>):""
+        }
       {this.state.datasets.length > 0 ? (
       <List dense>
         {this.state.datasets.map(dataset => 
@@ -133,16 +198,17 @@ class Home extends Component {
           dataset={dataset}
           user={this.props.user}
           db={this.props.db}
-          projects={this.state.projects}
+          project_selected={this.state.project_selected}
+          datasetsRequested={this.state.datasetsRequested[this.state.project_selected.id]}
           />
-        ))}
+        )}
       </List>
     ) : (
       <div>No datasets currently available</div>
     )
     }
-    <Snackbar open={this.state.open} autoHideDuration={6000} onClose={this.handleClose}>
-        <Alert onClose={this.handleClose} severity={this.state.severity}>
+    <Snackbar open={this.state.open} autoHideDuration={6000} onClose={this.handleSnackbarClose}>
+        <Alert onClose={this.handleSnackbarClose} severity={this.state.severity}>
           {this.state.message}
         </Alert>
     </Snackbar>
