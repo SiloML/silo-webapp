@@ -1,5 +1,5 @@
 import React from "react";
-import ProjectEntry from "./ProjectEntry";
+import DataEntry from "./DataEntry";
 import Zoom from "@material-ui/core/Zoom";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
@@ -13,10 +13,10 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import * as firebase from "firebase";
 
-class ProjectList extends React.Component {
+class DataList extends React.Component {
   constructor(props) {
     super(props);
-    this.colRef = props.db.collection("projects");
+    this.colRef = props.db.collection("datasets");
     this.state = {
       projects: [],
       loading: true,
@@ -33,7 +33,7 @@ class ProjectList extends React.Component {
       snapshot.docChanges().forEach(change => {
         if (
           change.type === "added" &&
-          change.doc.data().researcher_id === this.props.user.uid
+          change.doc.data().owner_id === this.props.user.uid
         ) {
           projs.push(change.doc.id);
         }
@@ -63,7 +63,7 @@ class ProjectList extends React.Component {
     var projMap = [];
     this.state.projects.forEach(proj => {
       projMap.push(
-        <ProjectEntry db={this.props.db} user={this.props.user} id={proj} />
+        <DataEntry db={this.props.db} user={this.props.user} id={proj} />
       );
     });
 
@@ -72,7 +72,9 @@ class ProjectList extends React.Component {
         {this.state.projects.length > 0 || this.state.loading ? (
           projMap
         ) : (
-          <div>You don't have any research projects! Create one today!</div>
+          <div>
+            You haven't uploaded any datasets yet, become a data owner today!
+          </div>
         )}
 
         <Zoom
@@ -148,17 +150,17 @@ class ProjectList extends React.Component {
                 let userid = this.props.user.uid;
                 console.log(this.state.nameHolder);
                 this.props.db
-                  .collection("projects")
+                  .collection("datasets")
                   .add({
                     name: this.state.nameHolder,
                     description: this.state.descHolder,
-                    researcher_id: userid
+                    owner_id: userid
                   })
                   .then(function(projectRef) {
                     /* Add dataset reference to user */
                     const userRef = db.collection("users").doc(userid);
                     userRef.update({
-                      list_of_projects: firebase.firestore.FieldValue.arrayUnion(
+                      list_of_datasets: firebase.firestore.FieldValue.arrayUnion(
                         projectRef
                       )
                     });
@@ -181,4 +183,4 @@ class ProjectList extends React.Component {
   }
 }
 
-export default ProjectList;
+export default DataList;
