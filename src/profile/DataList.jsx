@@ -1,5 +1,5 @@
 import React from "react";
-import ProjectEntry from "./ProjectEntry";
+import DataEntry from "./DataEntry";
 import Zoom from "@material-ui/core/Zoom";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
@@ -62,7 +62,9 @@ class DataList extends React.Component {
     };
     var projMap = [];
     this.state.projects.forEach(proj => {
-      projMap.push(<div>{proj}</div>);
+      projMap.push(
+        <DataEntry db={this.props.db} user={this.props.user} id={proj} />
+      );
     });
 
     return (

@@ -12,11 +12,11 @@ import Paper from "@material-ui/core/Paper";
 class DataEntry extends React.Component {
   constructor(props) {
     super(props);
-    this.project_id = props.id;
+    this.dataset_id = props.id;
     this.colRef = props.db.collection("requests");
-    this.docRef = props.db.doc("/projects/" + this.project_id);
+    this.docRef = props.db.doc("/datasets/" + this.dataset_id);
     this.state = {
-      datasets: [],
+      projects: [],
       desc: "",
       name: ""
     };
@@ -26,26 +26,26 @@ class DataEntry extends React.Component {
     this.unsubscribe1 = this.colRef.onSnapshot(snapshot => {
       var reqs = [];
       snapshot.docs.forEach(docSnapshot => {
-        if (docSnapshot.data().project_id === this.project_id) {
-          var datasetInfo;
+        if (docSnapshot.data().dataset_id === this.dataset_id) {
+          var projectInfo;
           this.props.db
-            .doc("/datasets/" + docSnapshot.data().dataset_id)
+            .doc("/projects/" + docSnapshot.data().project_id)
             .get()
             .then(doc => {
               if (doc && doc.exists) {
-                datasetInfo = doc.data();
+                projectInfo = doc.data();
                 var ownerName;
                 this.props.db
-                  .doc("/users/" + datasetInfo.owner_id)
+                  .doc("/users/" + projectInfo.researcher_id)
                   .get()
                   .then(doc => {
                     if (doc && doc.exists) {
                       ownerName = doc.data().name;
                       reqs.push([
-                        datasetInfo.name,
+                        projectInfo.name,
+                        projectInfo.description,
                         ownerName,
-                        docSnapshot.data().status,
-                        datasetInfo.connection_status
+                        docSnapshot.data().status
                       ]);
                       this.setState({
                         datasets: reqs
@@ -59,10 +59,12 @@ class DataEntry extends React.Component {
     });
 
     this.unsubscribe2 = this.docRef.onSnapshot(docSnapshot => {
-      this.setState({
-        desc: docSnapshot.data().description,
-        name: docSnapshot.data().name
-      });
+      if (docSnapshot && docSnapshot.data()) {
+        this.setState({
+          desc: docSnapshot.data().description,
+          name: docSnapshot.data().name
+        });
+      }
     });
   }
 
@@ -85,17 +87,17 @@ class DataEntry extends React.Component {
     return (
       <div style={divStyle}>
         <div>
-          {this.state.desc} by {this.state.name}. API KEY: {this.project_id}
+          {this.state.desc} by {this.state.name}. API KEY: {this.dataset_id}
         </div>
-        {this.state.datasets.length > 0 ? (
+        {this.state.projects.length > 0 ? (
           <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Dataset</TableCell>
-                  <TableCell align="right">Owner</TableCell>
+                  <TableCell>Project</TableCell>
+                  <TableCell align="right">Description</TableCell>
+                  <TableCell align="right">Researcher</TableCell>
                   <TableCell align="right">Request Status</TableCell>
-                  <TableCell align="right">Database Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -113,7 +115,7 @@ class DataEntry extends React.Component {
             </Table>
           </TableContainer>
         ) : (
-          <div>No data requests yet for this project! Make one today!</div>
+          <div>No data requests yet for this dataset</div>
         )}
       </div>
     );
