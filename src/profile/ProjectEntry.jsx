@@ -13,7 +13,6 @@ class ProjectEntry extends React.Component {
   constructor(props) {
     super(props);
     this.project_id = props.id;
-    console.log(props);
     this.colRef = props.db.collection("requests");
     this.docRef = props.db.doc("/projects/" + this.project_id);
     this.state = {
@@ -78,35 +77,44 @@ class ProjectEntry extends React.Component {
         minWidth: 650
       }
     });
+    var divStyle = {
+      padding: "10px",
+      background: "#eee",
+      margin: "5px"
+    };
     return (
-      <div>
+      <div style={divStyle}>
         <div>
-          {this.state.desc} by {this.state.name}
+          {this.state.desc} by {this.state.name}. API KEY: {this.project_id}
         </div>
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Dataset</TableCell>
-                <TableCell align="right">Owner</TableCell>
-                <TableCell align="right">Request Status</TableCell>
-                <TableCell align="right">Database Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.state.datasets.map(row => (
-                <TableRow key={row.name}>
-                  <TableCell component="th" scope="row">
-                    {row[0]}
-                  </TableCell>
-                  <TableCell align="right">{row[1]}</TableCell>
-                  <TableCell align="right">{row[2]}</TableCell>
-                  <TableCell align="right">{row[3]}</TableCell>
+        {this.state.datasets.length > 0 ? (
+          <TableContainer component={Paper}>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Dataset</TableCell>
+                  <TableCell align="right">Owner</TableCell>
+                  <TableCell align="right">Request Status</TableCell>
+                  <TableCell align="right">Database Status</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {this.state.datasets.map(row => (
+                  <TableRow key={row.name}>
+                    <TableCell component="th" scope="row">
+                      {row[0]}
+                    </TableCell>
+                    <TableCell align="right">{row[1]}</TableCell>
+                    <TableCell align="right">{row[2]}</TableCell>
+                    <TableCell align="right">{row[3]}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <div>No data requests yet for this project! Make one today!</div>
+        )}
       </div>
     );
   }

@@ -1,0 +1,9 @@
+.fab {
+  position: sticky;
+  position: -webkit-sticky;
+}
+
+.projectList {
+  height: 100vh;
+  align-items: flex-start;
+}
