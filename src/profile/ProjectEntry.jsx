@@ -88,8 +88,12 @@ class ProjectEntry extends React.Component {
           {this.state.desc} by {this.state.name}. API KEY: {this.project_id}
         </div>
         {this.state.datasets.length > 0 ? (
-          <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label="simple table">
+          <TableContainer component={Paper} style={{ maxHeight: "300px" }}>
+            <Table
+              stickyHeader
+              className={classes.table}
+              aria-label="sticky table"
+            >
               <TableHead>
                 <TableRow>
                   <TableCell>Dataset</TableCell>

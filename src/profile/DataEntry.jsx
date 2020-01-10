@@ -18,7 +18,8 @@ class DataEntry extends React.Component {
     this.state = {
       projects: [],
       desc: "",
-      name: ""
+      name: "",
+      loading: true
     };
   }
 
@@ -38,9 +39,9 @@ class DataEntry extends React.Component {
                 this.props.db
                   .doc("/users/" + projectInfo.researcher_id)
                   .get()
-                  .then(doc => {
-                    if (doc && doc.exists) {
-                      ownerName = doc.data().name;
+                  .then(usr => {
+                    if (usr && usr.exists) {
+                      ownerName = usr.data().name;
                       reqs.push([
                         projectInfo.name,
                         projectInfo.description,
@@ -48,7 +49,8 @@ class DataEntry extends React.Component {
                         docSnapshot.data().status
                       ]);
                       this.setState({
-                        datasets: reqs
+                        projects: reqs,
+                        loading: false
                       });
                     }
                   });
@@ -89,9 +91,13 @@ class DataEntry extends React.Component {
         <div>
           {this.state.desc} by {this.state.name}. API KEY: {this.dataset_id}
         </div>
-        {this.state.projects.length > 0 ? (
-          <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label="simple table">
+        {this.state.projects.length > 0 || this.state.loading ? (
+          <TableContainer component={Paper} style={{ maxHeight: "300px" }}>
+            <Table
+              stickyHeader
+              className={classes.table}
+              aria-label="sticky table"
+            >
               <TableHead>
                 <TableRow>
                   <TableCell>Project</TableCell>
@@ -101,7 +107,7 @@ class DataEntry extends React.Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.state.datasets.map(row => (
+                {this.state.projects.map(row => (
                   <TableRow key={row.name}>
                     <TableCell component="th" scope="row">
                       {row[0]}
