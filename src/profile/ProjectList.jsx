@@ -159,17 +159,17 @@ class ProjectList extends React.Component {
               </Button>
             </DialogActions>
           </Dialog>
-          <Fab
-            aria-label={fab.label}
-            className={fab.className}
-            color={fab.color}
-            onClick={() => {
-              this.setState({ addDialogOpen: true });
-            }}
-          >
-            {fab.icon}
-          </Fab>
         </div>
+        <Fab
+          aria-label={fab.label}
+          className={fab.className}
+          color={fab.color}
+          onClick={() => {
+            this.setState({ addDialogOpen: true });
+          }}
+        >
+          {fab.icon}
+        </Fab>
       </div>
     );
   }
