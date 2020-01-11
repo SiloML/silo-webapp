@@ -12,6 +12,10 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -20,7 +24,37 @@ const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider()
 };
 
+const StyledMenu = withStyles({
+  paper: {
+    border: "1px solid #d3d4d5"
+  }
+})(props => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "center"
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "center"
+    }}
+    {...props}
+  />
+));
+
 function NavBar({ user, signOut, signInWithGoogle }) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1
@@ -33,6 +67,7 @@ function NavBar({ user, signOut, signInWithGoogle }) {
     }
   }));
   const classes = useStyles();
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -41,18 +76,37 @@ function NavBar({ user, signOut, signInWithGoogle }) {
             <Link to={`/`} className="appbar-link">
               Silo ML
             </Link>
+
             {user ? (
               <div className="link-right">
-                <button className="signinsignout" onClick={signOut}>
-                  Sign out
-                </button>
-                <Link to={`/profile`} className="appbar-link">
+                <Button style={{ borderRadius: "150px" }} onClick={handleClick}>
                   <Avatar alt="Profile" src={user.photoURL} />
-                </Link>
+                </Button>
+                <StyledMenu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={handleClose}>
+                    <Link to={`/profile`} style={{ color: "black" }}>
+                      Profile
+                    </Link>
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleClose();
+                      signOut();
+                    }}
+                  >
+                    Sign out
+                  </MenuItem>
+                </StyledMenu>
               </div>
             ) : (
-              <button className="signinsignout" onClick={signInWithGoogle}>
-                Sign in with Google
+              <button onClick={signInWithGoogle}>
+                <Button className="signinsignout">Sign in with Google</Button>
               </button>
             )}
           </div>
