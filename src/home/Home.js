@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import Button from "@material-ui/core/Button";
 import HomeDatasetRow from './HomeDatasetRow';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import * as firebase from "firebase";
 import HomeProjectSelection from './HomeProjectSelection';
+import "./home.css";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -166,19 +166,17 @@ class Home extends Component {
   render() {
     return (
       <div>
-      { this.props.user ? (<div>
-      <List component="div" role="list">
-        <ListItem
-          button
-          divider
-          aria-haspopup="true"
-          aria-controls="ringtone-menu"
-          aria-label="phone ringtone"
-          onClick={this.handleClickListItem}
-          role="listitem"
-        >
-          <ListItemText primary="Selecting data for" secondary={this.state.project_selected.name} />
-        </ListItem>
+      <div className="title">Explore Datasets</div>
+      { this.props.user ? (<div className="home-container">
+        <div className="project-display">
+          <p>Requesting data for</p>
+          <h2>{this.state.project_selected.name.length > 0 ? this.state.project_selected.name : "No project selected"}</h2>
+        </div>
+        <div className="project-select">
+        <Button variant="contained" color="primary" onClick={this.handleClickListItem}>
+          Select Project
+        </Button>
+        </div>
         <HomeProjectSelection
           id="ringtone-menu"
           projects={this.state.projects}
@@ -187,11 +185,11 @@ class Home extends Component {
           onClose={this.handleClose}
           value={this.state.project_selected}
         />
-      </List>
     </div>):""
         }
+      <div className="home-container">
       {this.state.datasets.length > 0 ? (
-      <List dense>
+      <div className="flexGrow">
         {this.state.datasets.map(dataset => 
         <HomeDatasetRow
           makeDataRequest={this.makeDataRequest}
@@ -202,11 +200,12 @@ class Home extends Component {
           datasetsRequested={this.state.datasetsRequested[this.state.project_selected.id]}
           />
         )}
-      </List>
+      </div>
     ) : (
       <div>No datasets currently available</div>
     )
     }
+    </div>
     <Snackbar open={this.state.open} autoHideDuration={6000} onClose={this.handleSnackbarClose}>
         <Alert onClose={this.handleSnackbarClose} severity={this.state.severity}>
           {this.state.message}

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Switch, Route, Link, Redirect } from "react-router-dom";
 import "../App.css";
 import ProjectList from "./ProjectList";
-import DatasetList from "./DatasetList";
 import DataList from "./DataList";
 import "./profile.css";
 
@@ -21,7 +20,6 @@ class Profile extends Component {
               <Link to={`${path}/dataowner`} id="tab2-tab">
                 Data Owner
               </Link>
-              <div class="slide"></div>
             </div>
           </header>
           <Switch>

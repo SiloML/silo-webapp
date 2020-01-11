@@ -5,7 +5,7 @@
   transition: box-shadow 0.3s;
   border-radius: 10px;
   float: left;
-  padding: 15px;
+  padding: 30px;
   margin-top: 50px;
   margin-left: 9%;
   margin-right: 9%;
@@ -20,6 +20,8 @@
 .titleBox {
   text-align: left;
   width: 30vw;
+  margin-right: 20px;
+  line-height: 25px;
 }
 
 p {
