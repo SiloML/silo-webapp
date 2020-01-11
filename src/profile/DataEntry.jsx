@@ -9,6 +9,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import CheckIcon from "@material-ui/icons/CheckOutlined";
+import CloseIcon from "@material-ui/icons/CloseOutlined";
+import Button from "@material-ui/core/Button";
 
 class DataEntry extends React.Component {
   constructor(props) {
@@ -51,7 +53,8 @@ class DataEntry extends React.Component {
                         projectInfo.name,
                         projectInfo.description,
                         ownerName,
-                        docSnapshot.data().status
+                        docSnapshot.data().status,
+                        docSnapshot.id
                       ]);
                       this.setState({
                         projects: reqs,
@@ -79,6 +82,11 @@ class DataEntry extends React.Component {
   componentWillUnmount() {
     this.unsubscribe1();
     this.unsubscribe2();
+  }
+
+  updateRequest(loc, newState) {
+    var docRef = this.props.db.collection("requests").doc(loc);
+    docRef.update({ status: newState });
   }
 
   render() {
@@ -128,7 +136,36 @@ class DataEntry extends React.Component {
                     <TableCell align="right">{row[1]}</TableCell>
                     <TableCell align="right">{row[2]}</TableCell>
                     <TableCell align="right">
-                      {row[3]} <CheckIcon />
+                      {row[3] === "Pending" ? (
+                        <div>
+                          <Button
+                            onClick={() => {
+                              this.updateRequest(row[4], "Approved");
+                            }}
+                          >
+                            <CheckIcon />
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              this.updateRequest(row[4], "Rejected");
+                            }}
+                          >
+                            <CloseIcon />
+                          </Button>
+                        </div>
+                      ) : (
+                        <CheckIcon
+                          style={{
+                            background: "green",
+                            color: "white",
+                            width: "60px",
+                            paddingTop: "3px",
+                            paddingBottom: "3px",
+                            marginRight: "30px",
+                            borderRadius: "5px"
+                          }}
+                        />
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
