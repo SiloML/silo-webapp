@@ -39,7 +39,8 @@ class Profile extends Component {
             <Redirect from={`${path}`} to={`${path}/researcher`} />
           </Switch>
         </div>
-      </div>);
+      </div>
+    );
   }
 }
 

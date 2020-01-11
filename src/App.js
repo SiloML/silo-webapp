@@ -70,7 +70,7 @@ function NavBar({ user, signOut, signInWithGoogle }) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{backgroundColor: "#253C78"}}>
+      <AppBar position="fixed" className="bar" style={{backgroundColor: "#253C78"}}>
         <Toolbar>
           <div className="toolbar">
             <Link to={`/`} className="appbar-link">

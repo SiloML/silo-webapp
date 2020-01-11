@@ -1,10 +1,5 @@
-.fab {
-  padding-top: 50px;
-  position: sticky;
-  position: -webkit-sticky;
-}
-
 .projectList {
   justify-content: center;
   align-items: center;
+  position: relative;
 }
