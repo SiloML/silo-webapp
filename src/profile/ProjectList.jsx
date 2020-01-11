@@ -159,19 +159,6 @@ class ProjectList extends React.Component {
               </Button>
             </DialogActions>
           </Dialog>
-<<<<<<< HEAD
-=======
-          <Fab
-            aria-label={fab.label}
-            className={fab.className}
-            style={{backgroundColor: "#D36582", color:"white"}}
-            onClick={() => {
-              this.setState({ addDialogOpen: true });
-            }}
-          >
-            {fab.icon}
-          </Fab>
->>>>>>> 282a4f70631da652a50e7a7feb5986f36da892c4
         </div>
         <Fab
           aria-label={fab.label}
