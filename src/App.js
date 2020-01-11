@@ -38,6 +38,7 @@ function NavBar({ user, signOut, signInWithGoogle }) {
       <AppBar position="static">
         <Toolbar>
           <div className="toolbar">
+<<<<<<< HEAD
             <Link to={`/`} className="appbar-link">
               Silo ML
             </Link>
@@ -51,6 +52,21 @@ function NavBar({ user, signOut, signInWithGoogle }) {
             ) : (
               <button onClick={signInWithGoogle}>Sign in with Google</button>
             )}
+=======
+          <Link to={`/`} className="appbar-link">
+            Silo ML
+          </Link>
+          {user ? (
+            <div className="link-right">
+              <button className="signinsignout" onClick={signOut}>Sign out</button>
+              <Link to={`/profile`} className="appbar-link">
+              <Avatar alt="Profile" src={user.photoURL} />
+              </Link>
+            </div>
+          ) : (
+            <button className="signinsignout" onClick={signInWithGoogle}>Sign in with Google</button>
+          )}
+>>>>>>> d511167f42e0209c62ccdd96366c26c8f6456705
           </div>
         </Toolbar>
       </AppBar>

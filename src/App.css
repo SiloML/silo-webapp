@@ -7,7 +7,10 @@
 .appbar-link {
   text-decoration: none;
   color: white;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
 }
 
 .link-right {
@@ -23,4 +26,11 @@
 * {
   margin: 0;
   padding: 0;
+}
+
+.signinsignout {
+  background-color: transparent;
+  border: transparent;
+  color: white;
+  font-size: 1rem;
 }
