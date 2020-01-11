@@ -8,6 +8,10 @@ import withFirebaseAuth from "react-with-firebase-auth";
 import * as firebase from "firebase";
 import "firebase/auth";
 import firebaseConfig from "./firebaseConfig";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import { makeStyles } from "@material-ui/core/styles";
+import Avatar from '@material-ui/core/Avatar';
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -15,6 +19,44 @@ const firebaseAppAuth = firebaseApp.auth();
 const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider()
 };
+
+function NavBar({ user, signOut, signInWithGoogle }) {
+  const useStyles = makeStyles(theme => ({
+    root: {
+      flexGrow: 1
+    },
+    menuButton: {
+      marginRight: theme.spacing(2)
+    },
+    title: {
+      flexGrow: 1
+    }
+  }));
+  const classes = useStyles();
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <div className="toolbar">
+          <Link to={`/`} className="link">
+            Silo ML
+          </Link>
+          {user ? (
+            <div className="link-right">
+              <Link to={`/profile`} className="link">
+              <Avatar alt="Profile" src={user.photoURL} />
+              </Link>
+              <button onClick={signOut}>Sign out</button>
+            </div>
+          ) : (
+            <button onClick={signInWithGoogle}>Sign in with Google</button>
+          )}
+          </div>
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
+}
 
 class App extends Component {
   render() {
@@ -41,23 +83,11 @@ class App extends Component {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
         />
-
-        <h1>Silo ML</h1>
-        <div className="links">
-          <Link to={`/`} className="link">
-            Home
-          </Link>
-          {user ? (
-            <div>
-              <Link to={`/profile`} className="link">
-                Profile
-              </Link>
-              <button onClick={signOut}>Sign out</button>
-            </div>
-          ) : (
-            <button onClick={signInWithGoogle}>Sign in with Google</button>
-          )}
-        </div>
+        <NavBar
+          user={user}
+          signOut={signOut}
+          signInWithGoogle={signInWithGoogle}
+        />
         <div className="tabs">
           {error && <div>{error}</div>}
           <Switch>
@@ -66,7 +96,7 @@ class App extends Component {
               user={user}
               db={db}
               exact
-              render={() => <Home path={'/'} db={db} user={user}></Home>}
+              render={() => <Home path={"/"} db={db} user={user}></Home>}
             />
             <ProtectedRoute
               path={`/profile`}
