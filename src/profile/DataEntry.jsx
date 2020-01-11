@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
+import "./DataEntry.css";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -95,22 +95,19 @@ class DataEntry extends React.Component {
         minWidth: 650
       }
     });
-    var divStyle = {
-      padding: "10px",
-      background: "#eee",
-      margin: "5px"
-    };
     return (
-      <div style={divStyle}>
-        <div>
-          <h2>
-            {this.state.desc} by {this.state.name}. API KEY: {this.dataset_id}
-          </h2>
-          {this.state.otp && this.state.otp.length > 0 ? (
-            <h3>OTP: {this.state.otp}</h3>
-          ) : (
-            <></>
-          )}
+      <div className="box">
+        <div className="titleBox">
+          <h2>{this.state.name}</h2>
+          <p>{this.state.desc}</p>
+          <p>
+            API Key: {"    "}
+            {this.dataset_id}
+          </p>
+          <p>
+            {this.state.otp && this.state.otp.length > 0 ? " OTP: " : <></>}
+            {this.state.otp}
+          </p>
         </div>
         {this.state.projects.length > 0 || this.state.loading ? (
           <TableContainer component={Paper} style={{ maxHeight: "300px" }}>
@@ -161,7 +158,7 @@ class DataEntry extends React.Component {
                             width: "60px",
                             paddingTop: "3px",
                             paddingBottom: "3px",
-                            marginRight: "30px",
+                            marginRight: "35px",
                             borderRadius: "5px"
                           }}
                         />

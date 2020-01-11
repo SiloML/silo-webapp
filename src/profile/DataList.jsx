@@ -104,7 +104,7 @@ class DataList extends React.Component {
           }}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+          <DialogTitle id="form-dialog-title">Create a new dataset</DialogTitle>
           <DialogContent>
             <DialogContentText>
               Please enter a name and description to start your project! You can
