@@ -11,7 +11,7 @@ import firebaseConfig from "./firebaseConfig";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from "@material-ui/core/Avatar";
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -26,7 +26,7 @@ function NavBar({ user, signOut, signInWithGoogle }) {
       flexGrow: 1
     },
     menuButton: {
-      marginRight: theme.spacing(2)
+      marginRight: theme.spacing(0)
     },
     title: {
       flexGrow: 1
@@ -38,19 +38,19 @@ function NavBar({ user, signOut, signInWithGoogle }) {
       <AppBar position="static">
         <Toolbar>
           <div className="toolbar">
-          <Link to={`/`} className="appbar-link">
-            Silo ML
-          </Link>
-          {user ? (
-            <div className="link-right">
-              <Link to={`/profile`} className="appbar-link">
-              <Avatar alt="Profile" src={user.photoURL} />
-              </Link>
-              <button onClick={signOut}>Sign out</button>
-            </div>
-          ) : (
-            <button onClick={signInWithGoogle}>Sign in with Google</button>
-          )}
+            <Link to={`/`} className="appbar-link">
+              Silo ML
+            </Link>
+            {user ? (
+              <div className="link-right">
+                <Link to={`/profile`} className="appbar-link">
+                  <Avatar alt="Profile" src={user.photoURL} />
+                </Link>
+                <button onClick={signOut}>Sign out</button>
+              </div>
+            ) : (
+              <button onClick={signInWithGoogle}>Sign in with Google</button>
+            )}
           </div>
         </Toolbar>
       </AppBar>
