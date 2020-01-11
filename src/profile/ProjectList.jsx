@@ -162,7 +162,7 @@ class ProjectList extends React.Component {
           <Fab
             aria-label={fab.label}
             className={fab.className}
-            color={fab.color}
+            style={{backgroundColor: "#D36582", color:"white"}}
             onClick={() => {
               this.setState({ addDialogOpen: true });
             }}

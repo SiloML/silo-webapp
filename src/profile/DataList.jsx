@@ -53,6 +53,7 @@ class DataList extends React.Component {
     const fab = {
       color: "primary",
       className: "fab",
+      backgroundColor: "#D36582",
       icon: <AddIcon />,
       label: "Add"
     };
@@ -162,8 +163,7 @@ class DataList extends React.Component {
         </Dialog>
         <Fab
           aria-label={fab.label}
-          className={fab.className}
-          color={fab.color}
+          style={{backgroundColor: "#D36582", color:"white"}}
           onClick={() => {
             this.setState({ addDialogOpen: true });
           }}
