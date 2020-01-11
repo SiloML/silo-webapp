@@ -1,4 +1,5 @@
 .container {
+<<<<<<< HEAD
   padding: 0;
   margin: 10px;
   border-radius: 5px;
@@ -9,6 +10,18 @@
 
 .background {
   background-color: #ffeecf;
+=======
+    padding:0;
+	margin:10px;
+	border-radius:5px;
+    box-shadow: 0 2px 3px rgba(0,0,0,.3);
+    margin: 0% 5%;
+    background-color: white;
+}
+
+.background {
+    background-color: #FFEECF;
+>>>>>>> 282a4f70631da652a50e7a7feb5986f36da892c4
 }
 
 header {

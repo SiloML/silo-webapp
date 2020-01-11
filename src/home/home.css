@@ -1,4 +1,5 @@
 .background {
+<<<<<<< HEAD
   background-color: #ffeecf;
 }
 
@@ -13,6 +14,23 @@ p {
   margin: 5px 10%;
   display: flex;
   background-color: white;
+=======
+    background-color: #FFEECF;
+}
+
+p {
+    color: #253C78
+}
+
+
+.home-container {
+    padding: 20px;
+	border-radius:5px;
+    box-shadow: 0 2px 3px rgba(0,0,0,.3);
+    margin: 5px 10%;
+    display: flex;
+    background-color:white;
+>>>>>>> 282a4f70631da652a50e7a7feb5986f36da892c4
 }
 
 .home-container-row {
