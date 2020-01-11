@@ -9,7 +9,7 @@ class Profile extends Component {
   render() {
     const { path, user, db } = this.props;
     return (
-      <div>
+      <div className="background">
         <div className="profile">Your Profile</div>
         <div className="container">
           <header>

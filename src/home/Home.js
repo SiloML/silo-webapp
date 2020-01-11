@@ -165,7 +165,7 @@ class Home extends Component {
   } 
   render() {
     return (
-      <div>
+      <div className="background">
       <div className="title">Explore Datasets</div>
       { this.props.user ? (<div className="home-container">
         <div className="project-display">
@@ -173,7 +173,7 @@ class Home extends Component {
           <h2>{this.state.project_selected.name.length > 0 ? this.state.project_selected.name : "No project selected"}</h2>
         </div>
         <div className="project-select">
-        <Button variant="contained" color="primary" onClick={this.handleClickListItem}>
+        <Button variant="contained" style={{backgroundColor: "#D36582", color: "white"}} onClick={this.handleClickListItem}>
           Select Project
         </Button>
         </div>
