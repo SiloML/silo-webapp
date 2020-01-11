@@ -1,0 +1,37 @@
+.home-container {
+    padding: 20px;
+	border-radius:5px;
+    box-shadow: 0 2px 3px rgba(0,0,0,.3);
+    margin: 5px 10%;
+    display: flex;
+}
+
+.home-container-row {
+    padding: 20px;
+	border-radius:5px;
+    box-shadow: 0 2px 3px rgba(0,0,0,.3);
+    margin: 10px;
+    display: flex;
+}
+
+.title {
+    display: block;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 25px 5%;
+}
+
+.project-display {
+    flex-grow: 1;
+    line-height: 25px;
+}
+
+
+.project-select {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.flexGrow {
+    flex-grow: 1;
+}
