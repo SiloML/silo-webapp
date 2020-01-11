@@ -1,9 +1,19 @@
+.background {
+    background-color: #FFEECF;
+}
+
+p {
+    color: #253C78
+}
+
+
 .home-container {
     padding: 20px;
 	border-radius:5px;
     box-shadow: 0 2px 3px rgba(0,0,0,.3);
     margin: 5px 10%;
     display: flex;
+    background-color:white;
 }
 
 .home-container-row {

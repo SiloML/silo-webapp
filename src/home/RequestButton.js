@@ -28,13 +28,19 @@ const handleClick = () => {
             message = "Approved"
             color = "white"
             backgroundColor = "#a2ad9c"
+        } else {
+            backgroundColor = "#D36582"
+            color="white"
+        }
+       } else {
+            backgroundColor = "#D36582"
+            color="white"
         } 
-      } 
+    } 
       
-  }
   return (
     <div>
-      <Button variant="contained" color="primary" style={{backgroundColor: backgroundColor, color: color}} disabled={disabled} onClick={handleClick}>
+      <Button variant="contained" style={{backgroundColor: backgroundColor, color: color}} disabled={disabled} onClick={handleClick}>
             {message}
       </Button>
     </div>

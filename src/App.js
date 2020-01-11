@@ -70,7 +70,7 @@ function NavBar({ user, signOut, signInWithGoogle }) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" style={{backgroundColor: "#253C78"}}>
         <Toolbar>
           <div className="toolbar">
             <Link to={`/`} className="appbar-link">
@@ -146,7 +146,7 @@ class App extends Component {
           signOut={signOut}
           signInWithGoogle={signInWithGoogle}
         />
-        <div className="tabs">
+        <div className="background">
           {error && <div>{error}</div>}
           <Switch>
             <Route
