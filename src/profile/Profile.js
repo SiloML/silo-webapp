@@ -4,22 +4,26 @@ import "../App.css";
 import ProjectList from "./ProjectList";
 import DatasetList from "./DatasetList";
 import DataList from "./DataList";
+import "./profile.css";
 
 class Profile extends Component {
   render() {
     const { path, user, db } = this.props;
     return (
       <div>
-        <h2>Your Profile</h2>
-        <div className="links">
-          <Link to={`${path}/researcher`} className="link">
-            Researcher
-          </Link>
-          <Link to={`${path}/dataowner`} className="link">
-            Data Owner
-          </Link>
-        </div>
-        <div className="tabs">
+        <div className="profile">Your Profile</div>
+        <div className="container">
+          <header>
+            <div id="material-tabs">
+              <Link to={`${path}/researcher`} id="tab1-tab">
+                Researcher
+              </Link>
+              <Link to={`${path}/dataowner`} id="tab2-tab">
+                Data Owner
+              </Link>
+              <div class="slide"></div>
+            </div>
+          </header>
           <Switch>
             <Route
               path={`${path}/researcher`}
@@ -37,8 +41,7 @@ class Profile extends Component {
             <Redirect from={`${path}`} to={`${path}/researcher`} />
           </Switch>
         </div>
-      </div>
-    );
+      </div>);
   }
 }
 
