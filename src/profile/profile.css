@@ -9,6 +9,7 @@
 
 .background {
   background-color: #ffeecf;
+  min-height: 100vh;
 }
 
 header {
