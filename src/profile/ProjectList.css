@@ -1,9 +1,10 @@
 .fab {
+  padding-top: 50px;
   position: sticky;
   position: -webkit-sticky;
 }
 
 .projectList {
-  height: 100vh;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
 }

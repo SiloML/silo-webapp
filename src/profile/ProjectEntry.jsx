@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
+import "./DataEntry.css";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -77,15 +77,16 @@ class ProjectEntry extends React.Component {
         minWidth: 650
       }
     });
-    var divStyle = {
-      padding: "10px",
-      background: "#eee",
-      margin: "5px"
-    };
+
     return (
-      <div style={divStyle}>
-        <div>
-          {this.state.desc} by {this.state.name}. API KEY: {this.project_id}
+      <div className="box">
+        <div className="titleBox">
+          <h2>{this.state.name}</h2>
+          <p>{this.state.desc}</p>
+          <p>
+            API Key: {"    "}
+            {this.project_id}
+          </p>
         </div>
         {this.state.datasets.length > 0 ? (
           <TableContainer component={Paper} style={{ maxHeight: "300px" }}>

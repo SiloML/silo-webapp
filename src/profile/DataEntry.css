@@ -1,0 +1,27 @@
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: box-shadow 0.3s;
+  border-radius: 10px;
+  float: left;
+  padding: 15px;
+  margin-top: 50px;
+  margin-left: 9%;
+  margin-right: 9%;
+  width: 80%;
+  box-shadow: 0 0 7px rgba(33, 33, 33, 0.2);
+}
+
+.box:hover {
+  box-shadow: 0 0 15px rgba(33, 33, 33, 0.2);
+}
+
+.titleBox {
+  text-align: left;
+  width: 30vw;
+}
+
+p {
+  color: grey;
+}

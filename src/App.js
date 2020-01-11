@@ -38,12 +38,12 @@ function NavBar({ user, signOut, signInWithGoogle }) {
       <AppBar position="static">
         <Toolbar>
           <div className="toolbar">
-          <Link to={`/`} className="link">
+          <Link to={`/`} className="appbar-link">
             Silo ML
           </Link>
           {user ? (
             <div className="link-right">
-              <Link to={`/profile`} className="link">
+              <Link to={`/profile`} className="appbar-link">
               <Avatar alt="Profile" src={user.photoURL} />
               </Link>
               <button onClick={signOut}>Sign out</button>

@@ -4,16 +4,12 @@
   font-family: "Roboto";
 }
 
-.link {
+.appbar-link {
   margin: 0 10px;
   text-decoration: none;
   color: white;
   font-size: 1.25rem;
   flex-grow: 1;
-}
-
-.profile-link {
-  font-size: 0.5rem;
 }
 
 .link-right {
