@@ -70,7 +70,7 @@ function NavBar({ user, signOut, signInWithGoogle }) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed" className="bar">
         <Toolbar>
           <div className="toolbar">
             <Link to={`/`} className="appbar-link">

@@ -77,26 +77,6 @@ class DataList extends React.Component {
           </div>
         )}
 
-        <Zoom
-          key={fab.color}
-          in={true}
-          timeout={transitionDuration}
-          style={{
-            transitionDelay: `${transitionDuration.exit}ms`
-          }}
-          unmountOnExit
-        >
-          <Fab
-            aria-label={fab.label}
-            className={fab.className}
-            color={fab.color}
-            onClick={() => {
-              this.setState({ addDialogOpen: true });
-            }}
-          >
-            {fab.icon}
-          </Fab>
-        </Zoom>
         <Dialog
           open={this.state.addDialogOpen}
           onClose={() => {
@@ -180,6 +160,16 @@ class DataList extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
+        <Fab
+          aria-label={fab.label}
+          className={fab.className}
+          color={fab.color}
+          onClick={() => {
+            this.setState({ addDialogOpen: true });
+          }}
+        >
+          {fab.icon}
+        </Fab>
       </div>
     );
   }

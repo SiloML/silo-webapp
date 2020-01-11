@@ -60,30 +60,105 @@ class ProjectList extends React.Component {
       enter: 100,
       exit: 100
     };
-    var projMap = [];
-    this.state.projects.forEach(proj => {
-      projMap.push(
-        <ProjectEntry db={this.props.db} user={this.props.user} id={proj} />
-      );
-    });
 
     return (
-      <div className="projectList">
-        {this.state.projects.length > 0 || this.state.loading ? (
-          projMap
-        ) : (
-          <div>You don't have any research projects! Create one today!</div>
-        )}
+      <div>
+        <div className="projectList">
+          {this.state.projects.length > 0 || this.state.loading ? (
+            this.state.projects.map(proj => (
+              <ProjectEntry
+                db={this.props.db}
+                user={this.props.user}
+                id={proj}
+              />
+            ))
+          ) : (
+            <div>You don't have any research projects! Create one today!</div>
+          )}
 
-        <Zoom
-          key={fab.color}
-          in={true}
-          timeout={transitionDuration}
-          style={{
-            transitionDelay: `${transitionDuration.exit}ms`
-          }}
-          unmountOnExit
-        >
+          <Dialog
+            open={this.state.addDialogOpen}
+            onClose={() => {
+              this.setState({ addDialogOpen: false });
+            }}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">
+              Create a new project
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Please enter a name and description to start your project! You
+                can request to add datasets on the homepage later.
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Name"
+                type="name"
+                value={this.state.nameHolder}
+                onChange={event => {
+                  this.setState({ nameHolder: event.target.value });
+                }}
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                id="desc"
+                label="Description"
+                type="text"
+                value={this.state.descHolder}
+                onChange={event => {
+                  this.setState({ descHolder: event.target.value });
+                }}
+                fullWidth
+                multiline
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={() => {
+                  this.setState({ addDialogOpen: false });
+                }}
+                color="primary"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  let db = this.props.db;
+                  let userid = this.props.user.uid;
+                  console.log(this.state.nameHolder);
+                  this.props.db
+                    .collection("projects")
+                    .add({
+                      name: this.state.nameHolder,
+                      description: this.state.descHolder,
+                      researcher_id: userid
+                    })
+                    .then(function(projectRef) {
+                      /* Add dataset reference to user */
+                      const userRef = db.collection("users").doc(userid);
+                      userRef.update({
+                        list_of_projects: firebase.firestore.FieldValue.arrayUnion(
+                          projectRef
+                        )
+                      });
+                    });
+                  this.setState({
+                    addDialogOpen: false,
+                    nameHolder: "",
+                    descHolder: ""
+                  });
+                }}
+                color="primary"
+                type="submit"
+              >
+                Create
+              </Button>
+            </DialogActions>
+          </Dialog>
           <Fab
             aria-label={fab.label}
             className={fab.className}
@@ -94,88 +169,7 @@ class ProjectList extends React.Component {
           >
             {fab.icon}
           </Fab>
-        </Zoom>
-        <Dialog
-          open={this.state.addDialogOpen}
-          onClose={() => {
-            this.setState({ addDialogOpen: false });
-          }}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Create a new project</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Please enter a name and description to start your project! You can
-              request to add datasets on the homepage later.
-            </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Name"
-              type="name"
-              value={this.state.nameHolder}
-              onChange={event => {
-                this.setState({ nameHolder: event.target.value });
-              }}
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="desc"
-              label="Description"
-              type="text"
-              value={this.state.descHolder}
-              onChange={event => {
-                this.setState({ descHolder: event.target.value });
-              }}
-              fullWidth
-              multiline
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                this.setState({ addDialogOpen: false });
-              }}
-              color="primary"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                let db = this.props.db;
-                let userid = this.props.user.uid;
-                console.log(this.state.nameHolder);
-                this.props.db
-                  .collection("projects")
-                  .add({
-                    name: this.state.nameHolder,
-                    description: this.state.descHolder,
-                    researcher_id: userid
-                  })
-                  .then(function(projectRef) {
-                    /* Add dataset reference to user */
-                    const userRef = db.collection("users").doc(userid);
-                    userRef.update({
-                      list_of_projects: firebase.firestore.FieldValue.arrayUnion(
-                        projectRef
-                      )
-                    });
-                  });
-                this.setState({
-                  addDialogOpen: false,
-                  nameHolder: "",
-                  descHolder: ""
-                });
-              }}
-              color="primary"
-              type="submit"
-            >
-              Create
-            </Button>
-          </DialogActions>
-        </Dialog>
+        </div>
       </div>
     );
   }

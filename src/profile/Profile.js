@@ -21,7 +21,6 @@ class Profile extends Component {
               <Link to={`${path}/dataowner`} id="tab2-tab">
                 Data Owner
               </Link>
-              <div class="slide"></div>
             </div>
           </header>
           <Switch>
@@ -41,7 +40,8 @@ class Profile extends Component {
             <Redirect from={`${path}`} to={`${path}/researcher`} />
           </Switch>
         </div>
-      </div>);
+      </div>
+    );
   }
 }
 
