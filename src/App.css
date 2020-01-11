@@ -5,7 +5,6 @@
 }
 
 .appbar-link {
-  margin: 0 10px;
   text-decoration: none;
   color: white;
   font-size: 1.5rem;
@@ -24,9 +23,14 @@
   display: flex;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+}
+
 .signinsignout {
   background-color: transparent;
   border: transparent;
   color: white;
-  font-size: 1.0rem;
+  font-size: 1rem;
 }

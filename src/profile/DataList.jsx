@@ -154,7 +154,9 @@ class DataList extends React.Component {
                   .add({
                     name: this.state.nameHolder,
                     description: this.state.descHolder,
-                    owner_id: userid
+                    owner_id: userid,
+                    connection_status: "planned",
+                    list_of_requests: []
                   })
                   .then(function(projectRef) {
                     /* Add dataset reference to user */
