@@ -43,13 +43,13 @@ function NavBar({ user, signOut, signInWithGoogle }) {
           </Link>
           {user ? (
             <div className="link-right">
+              <button className="signinsignout" onClick={signOut}>Sign out</button>
               <Link to={`/profile`} className="appbar-link">
               <Avatar alt="Profile" src={user.photoURL} />
               </Link>
-              <button onClick={signOut}>Sign out</button>
             </div>
           ) : (
-            <button onClick={signInWithGoogle}>Sign in with Google</button>
+            <button className="signinsignout" onClick={signInWithGoogle}>Sign in with Google</button>
           )}
           </div>
         </Toolbar>
