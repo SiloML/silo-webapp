@@ -21,24 +21,24 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const firebaseAppAuth = firebaseApp.auth();
 const providers = {
-  googleProvider: new firebase.auth.GoogleAuthProvider()
+  googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
 
 const StyledMenu = withStyles({
   paper: {
-    border: "1px solid #d3d4d5"
-  }
-})(props => (
+    border: "1px solid #d3d4d5",
+  },
+})((props) => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
     anchorOrigin={{
       vertical: "bottom",
-      horizontal: "center"
+      horizontal: "center",
     }}
     transformOrigin={{
       vertical: "top",
-      horizontal: "center"
+      horizontal: "center",
     }}
     {...props}
   />
@@ -47,7 +47,7 @@ const StyledMenu = withStyles({
 function NavBar({ user, signOut, signInWithGoogle }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -55,22 +55,26 @@ function NavBar({ user, signOut, signInWithGoogle }) {
     setAnchorEl(null);
   };
 
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles((theme) => ({
     root: {
-      flexGrow: 1
+      flexGrow: 1,
     },
     menuButton: {
-      marginRight: theme.spacing(0)
+      marginRight: theme.spacing(0),
     },
     title: {
-      flexGrow: 1
-    }
+      flexGrow: 1,
+    },
   }));
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className="bar" style={{backgroundColor: "#253C78"}}>
+      <AppBar
+        position="fixed"
+        className="bar"
+        style={{ backgroundColor: "#5C7af7" }}
+      >
         <Toolbar>
           <div className="toolbar">
             <Link to={`/`} className="appbar-link">
@@ -123,17 +127,15 @@ class App extends Component {
     const { error } = state;
     /* Register user if not already registered */
     if (user) {
-      db.collection("users")
-        .doc(user.uid)
-        .set(
-          {
-            name: user.displayName,
-            photoURL: user.photoURL
-          },
-          {
-            merge: true
-          }
-        );
+      db.collection("users").doc(user.uid).set(
+        {
+          name: user.displayName,
+          photoURL: user.photoURL,
+        },
+        {
+          merge: true,
+        }
+      );
     }
     return (
       <div className="App">
@@ -173,5 +175,5 @@ class App extends Component {
 
 export default withFirebaseAuth({
   providers,
-  firebaseAppAuth
+  firebaseAppAuth,
 })(App);
